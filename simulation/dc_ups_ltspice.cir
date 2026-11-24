@@ -1,0 +1,31 @@
+* DC UPS for ESP32 IoT Device (AN1149 + MT3608 + 1000uF)
+* Transient Simulation Netlist
+VADAPTER V_IN 0 PULSE(5 0 20m 1m 1m 40m 100m)
+VBAT V_BAT 0 3.7
+R_BAT V_BAT V_BAT_INT 0.05
+
+* Schottky Diode D1 (Adapter to V_SW)
+D1 V_IN V_SW MBR0520
+.model MBR0520 D(Is=31.7u Rs=0.08 N=1.04 Cjo=120p)
+
+* P-MOSFET Q1 (Battery to V_SW)
+* Drain at V_BAT, Source at V_SW, Gate at V_GATE
+M1 V_BAT_INT V_GATE V_SW V_SW AO3401
+.model AO3401 PMOS(Vto=-0.8 Kp=25 Rs=0.02 Rd=0.02 Cgs=400p Cgd=150p)
+
+* Gate pull-down resistor
+R_GATE V_GATE 0 10k
+W_GATE V_IN V_GATE 0.001
+
+* Switched node capacitance
+C_SW V_SW 0 220u
+R_ESR_SW V_SW V_SW_CAP 0.05
+
+* Boost stage representation
+* Regulated output rail 5.1V with 1000uF bulk capacitor
+C_OUT V_5V_OUT 0 1000u
+R_LOAD V_5V_OUT 0 12.5
+
+.tran 0.1u 80m 0 1u
+.backanno
+.end

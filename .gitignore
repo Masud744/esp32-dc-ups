@@ -1,0 +1,11 @@
+# KiCad temporary & lock files
+*.lck
+*.bak
+*-bak*
+_autosave-*
+*.kicad_pcb-bak
+*.kicad_sch-bak
+
+# OS files
+.DS_Store
+Thumbs.db
